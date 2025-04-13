@@ -4,6 +4,7 @@ import '../providers/product_provider.dart';
 import '../widgets/carousel_slider.dart';
 import '../widgets/product_card.dart';
 import '../widgets/search_bar.dart';
+import '../providers/ai_provider.dart'; // Import AIProvider to use in HomeScreen
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -75,6 +76,11 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Privacy Policy'),
               onTap: () => Navigator.pushNamed(context, '/privacy'),
             ),
+            ListTile(
+              leading: const Icon(Icons.auto_awesome),
+              title: const Text('AI Design Assistant'),
+              onTap: () => Navigator.pushNamed(context, '/ai-design'),
+            ),
           ],
         ),
       ),
@@ -139,6 +145,38 @@ class HomeScreen extends StatelessWidget {
                   return ProductCard(product: product);
                 },
               ),
+            ),
+            // Add AI Design Section Here
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'AI Generated Designs',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            Consumer<AIProvider>(
+              builder: (context, aiProvider, child) {
+                if (aiProvider.isProcessing) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return aiProvider.generatedDesigns.isEmpty
+                    ? const Center(child: Text('No designs generated.'))
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: aiProvider.generatedDesigns.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.network(aiProvider.generatedDesigns[index]),
+                            ),
+                          );
+                        },
+                      );
+              },
             ),
           ],
         ),

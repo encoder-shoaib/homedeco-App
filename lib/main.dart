@@ -1,23 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'providers/theme_provider.dart';
-import 'providers/product_provider.dart';
-import 'screens/home_screen.dart';
-import 'screens/login_screen.dart';
-import 'screens/profile_screen.dart';
-import 'screens/settings_screen.dart';
-import 'screens/categories_screen.dart';
-import 'screens/favorites_screen.dart';
-import 'screens/cart_screen.dart';
-import 'screens/orders_screen.dart';
-import 'screens/privacy_policy_screen.dart';
 
-void main() {
+// Providers
+import 'package:homeease/providers/theme_provider.dart';
+import 'package:homeease/providers/product_provider.dart';
+import 'package:homeease/providers/ai_provider.dart';
+
+// Screens
+import 'package:homeease/screens/home_screen.dart';
+import 'package:homeease/screens/login_screen.dart';
+import 'package:homeease/screens/profile_screen.dart';
+import 'package:homeease/screens/settings_screen.dart';
+import 'package:homeease/screens/categories_screen.dart';
+import 'package:homeease/screens/favorites_screen.dart';
+import 'package:homeease/screens/cart_screen.dart';
+import 'package:homeease/screens/orders_screen.dart';
+import 'package:homeease/screens/privacy_policy_screen.dart';
+import 'package:homeease/screens/ai_design_screen.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables from .env file
+  await dotenv.load(fileName: ".env");
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => AIProvider()), // AI Design Provider
       ],
       child: const MyApp(),
     ),
@@ -33,6 +46,10 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'HomeEase',
+      debugShowCheckedModeBanner: false,
+      themeMode: themeProvider.themeMode,
+
+      // Light Theme
       theme: ThemeData(
         primaryColor: Colors.teal,
         colorScheme: ColorScheme.fromSeed(
@@ -51,6 +68,8 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
+
+      // Dark Theme
       darkTheme: ThemeData(
         primaryColor: Colors.teal,
         colorScheme: ColorScheme.fromSeed(
@@ -69,8 +88,11 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      themeMode: themeProvider.themeMode,
+
+      // Define Initial Route
       initialRoute: '/login',
+
+      // Define Named Routes
       routes: {
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
@@ -81,8 +103,8 @@ class MyApp extends StatelessWidget {
         '/cart': (context) => const CartScreen(),
         '/orders': (context) => const OrdersScreen(),
         '/privacy': (context) => const PrivacyPolicyScreen(),
+        '/ai-design': (context) => const AIDesignScreen(), // New AI Feature
       },
-      debugShowCheckedModeBanner: false,
     );
   }
 }

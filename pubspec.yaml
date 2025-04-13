@@ -1,9 +1,7 @@
+
 name: homeease
-description: A Flutter-based Home Decor App for exploring, visualizing, and shopping home décor items.
-
-# Prevent accidental publishing to pub.dev
+description: A Flutter-based Home Decor App with AI Design Generator
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
@@ -12,19 +10,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^6.1.2 # State management
-  carousel_slider: ^5.0.0 # Carousel for banners, updated to fix conflict
-  cupertino_icons: ^1.0.8 # Default Flutter icons
+  provider: ^6.1.2
+  carousel_slider: ^5.0.0
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.17
+  http: ^1.1.0
+  flutter_dotenv: ^5.1.0
+  image_picker: ^1.0.4
+  image_picker_for_web: ^3.0.6
+  firebase_core: ^2.24.0
+  firebase_auth: ^4.12.0
+  google_sign_in: ^6.1.5
+  flutter_facebook_auth: ^7.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0 # Code linting
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
-
-  # Assets for images
   assets:
     - assets/images/banner1.jpg
     - assets/images/banner2.jpg
@@ -36,3 +41,4 @@ flutter:
     - assets/images/room_living.jpg
     - assets/images/room_kitchen.jpg
     - assets/images/room_dining.jpg
+    - .env

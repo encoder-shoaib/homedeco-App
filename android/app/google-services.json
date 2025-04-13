@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1047424722735",
+    "project_id": "home-decor-554c4",
+    "storage_bucket": "home-decor-554c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047424722735:android:0d0e7ec7432e01758f63da",
+        "android_client_info": {
+          "package_name": "com.example.homedeco"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlN7Fad7jMMfKk8FUanDVZ4E1OzIEzMP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
