@@ -13,17 +13,18 @@ class ProductProvider with ChangeNotifier {
     Product(
       id: 2,
       name: 'Table Lamp',
-      price: 49.99,
+      price: 299.99,
       imageUrl: 'assets/images/product2.jpg',
-      category: 'Lighting',
+      category: 'Furniture',
     ),
     Product(
       id: 3,
-      name: 'Wall Art',
-      price: 79.99,
+      name: 'Dining Table',
+      price: 299.99,
       imageUrl: 'assets/images/product3.jpg',
-      category: 'Wall Art',
+      category: 'Furniture',
     ),
+    // ... other products
   ];
 
   final List<Product> _favorites = [];
@@ -33,22 +34,53 @@ class ProductProvider with ChangeNotifier {
   List<Product> get favorites => _favorites;
   List<Product> get cart => _cart;
 
+  // New: Track product quantities in cart
+  final Map<int, int> _cartQuantities = {};
+
+  int getCartQuantity(Product product) {
+    return _cartQuantities[product.id] ?? 0;
+  }
+
+  void addToCart(Product product) {
+    if (_cart.contains(product)) {
+      _cartQuantities[product.id] = (getCartQuantity(product) + 1);
+    } else {
+      _cart.add(product);
+      _cartQuantities[product.id] = 1;
+    }
+    notifyListeners();
+  }
+
+  void removeFromCart(Product product) {
+    if (_cart.contains(product)) {
+      if (getCartQuantity(product) > 1) {
+        _cartQuantities[product.id] = (getCartQuantity(product) - 1);
+      } else {
+        _cart.remove(product);
+        _cartQuantities.remove(product.id);
+      }
+      notifyListeners();
+    }
+  }
+
+  void removeAllFromCart(Product product) {
+    _cart.remove(product);
+    _cartQuantities.remove(product.id);
+    notifyListeners();
+  }
+
+  double get cartTotal {
+    return _cart.fold(0, (total, product) {
+      return total + (product.price * getCartQuantity(product));
+    });
+  }
+
   void toggleFavorite(Product product) {
     if (_favorites.contains(product)) {
       _favorites.remove(product);
     } else {
       _favorites.add(product);
     }
-    notifyListeners();
-  }
-
-  void addToCart(Product product) {
-    _cart.add(product);
-    notifyListeners();
-  }
-
-  void removeFromCart(Product product) {
-    _cart.remove(product);
     notifyListeners();
   }
 }

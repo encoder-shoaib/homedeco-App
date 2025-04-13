@@ -8,19 +8,34 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(context);
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Favorites')),
-      body: productProvider.favorites.isEmpty
-          ? const Center(child: Text('No favorites yet'))
-          : ListView.builder(
-              itemCount: productProvider.favorites.length,
-              itemBuilder: (context, index) {
-                final product = productProvider.favorites[index];
-                return ProductCard(product: product);
-              },
+      appBar: AppBar(
+        title: const Text('Favorites'),
+      ),
+      body: Consumer<ProductProvider>(
+        builder: (context, productProvider, child) {
+          final favorites = productProvider.favorites;
+          if (favorites.isEmpty) {
+            return const Center(
+              child: Text('No favorites yet!', style: TextStyle(fontSize: 18)),
+            );
+          }
+          return GridView.builder(
+            padding: const EdgeInsets.all(16.0),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+              childAspectRatio: 0.7,
             ),
+            itemCount: favorites.length,
+            itemBuilder: (context, index) {
+              final product = favorites[index];
+              return ProductCard(product: product);
+            },
+          );
+        },
+      ),
     );
   }
 }
